@@ -10,11 +10,9 @@
   <PropertyGroup>
     <PackageId>YAnalyzers</PackageId>
     <PackageVersion>1.0.0.0</PackageVersion>
-    <Authors>Youssef</Authors>
-    <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>
-    <PackageProjectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</PackageProjectUrl>
-    <PackageIconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</PackageIconUrl>
-    <RepositoryUrl>http://REPOSITORY_URL_HERE_OR_DELETE_THIS_LINE</RepositoryUrl>
+    <Authors>Youssef1313</Authors>
+    <PackageProjectUrl>https://github.com/Youssef1313/YAnalyzers</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Youssef1313/YAnalyzers</RepositoryUrl>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <Description>YAnalyzers</Description>
     <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>
@@ -26,8 +24,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\YAnalyzers.CodeFixes\YAnalyzers.CodeFixes.csproj" />
-    <ProjectReference Include="..\YAnalyzers\YAnalyzers.csproj" />
+    <ProjectReference Include="..\Core\YAnalyzers.CodeFixes\YAnalyzers.CodeFixes.csproj" />
+    <ProjectReference Include="..\Core\YAnalyzers\YAnalyzers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

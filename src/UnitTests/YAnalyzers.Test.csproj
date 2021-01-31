@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
 
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <GenerateBindingRedirectsOutputType>true</GenerateBindingRedirectsOutputType>
@@ -11,7 +11,7 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="1.3.2" />
     <PackageReference Include="MSTest.TestFramework" Version="1.3.2" />
-    <PackageReference Include="Microsoft.CodeAnalysis" Version="3.3.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis" Version="$(MicrosoftCodeAnalysisVersion)" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Analyzer.Testing.MSTest" Version="1.0.1-beta1.*" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeFix.Testing.MSTest" Version="1.0.1-beta1.*" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.CodeRefactoring.Testing.MSTest" Version="1.0.1-beta1.*" />
@@ -21,8 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\YAnalyzers.CodeFixes\YAnalyzers.CodeFixes.csproj" />
-    <ProjectReference Include="..\YAnalyzers\YAnalyzers.csproj" />
+    <ProjectReference Include="..\Core\YAnalyzers.CodeFixes\YAnalyzers.CodeFixes.csproj" />
+    <ProjectReference Include="..\Core\YAnalyzers\YAnalyzers.csproj" />
+    <ProjectReference Include="..\CSharp\YAnalyzers.CSharp.CodeFixes\YAnalyzers.CSharp.CodeFixes.csproj" />
+    <ProjectReference Include="..\CSharp\YAnalyzers.CSharp\YAnalyzers.CSharp.csproj" />
   </ItemGroup>
 
 </Project>
