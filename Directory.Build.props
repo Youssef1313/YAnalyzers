@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <LangVersion>preview</LangVersion>
+    <MicrosoftCodeAnalysisVersion>3.8.0</MicrosoftCodeAnalysisVersion>
+  </PropertyGroup>
+</Project>

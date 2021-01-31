@@ -33,8 +33,8 @@
   <Import Project="$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets" Condition="Exists('$(VSToolsPath)\VSSDK\Microsoft.VsSDK.targets')" />
 
   <ItemGroup>
-    <ProjectReference Include="..\YAnalyzers.CodeFixes\YAnalyzers.CodeFixes.csproj" />
-    <ProjectReference Include="..\YAnalyzers\YAnalyzers.csproj" />
+    <ProjectReference Include="..\Core\YAnalyzers.CodeFixes\YAnalyzers.CodeFixes.csproj" />
+    <ProjectReference Include="..\Core\YAnalyzers\YAnalyzers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

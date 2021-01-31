@@ -13,14 +13,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace YAnalyzers
+namespace YAnalyzers.CSharp
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(YAnalyzersCodeFixProvider)), Shared]
-    public class YAnalyzersCodeFixProvider : CodeFixProvider
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(YAnalyzersCSharpCodeFixProvider)), Shared]
+    public class YAnalyzersCSharpCodeFixProvider : CodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(YAnalyzersAnalyzer.DiagnosticId); }
+            get { return ImmutableArray.Create(CSharpUseImplicitType.DiagnosticId); }
         }
 
         public sealed override FixAllProvider GetFixAllProvider()

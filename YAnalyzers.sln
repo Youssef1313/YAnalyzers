@@ -3,15 +3,30 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAnalyzers", "YAnalyzers\YAnalyzers\YAnalyzers.csproj", "{44C37984-8243-4F74-B29E-51EFD2E55EB9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAnalyzers", "src\Core\YAnalyzers\YAnalyzers.csproj", "{44C37984-8243-4F74-B29E-51EFD2E55EB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAnalyzers.CodeFixes", "YAnalyzers\YAnalyzers.CodeFixes\YAnalyzers.CodeFixes.csproj", "{7B924711-5778-4C5F-AD9F-B684274E703F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAnalyzers.CodeFixes", "src\Core\YAnalyzers.CodeFixes\YAnalyzers.CodeFixes.csproj", "{7B924711-5778-4C5F-AD9F-B684274E703F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAnalyzers.Package", "YAnalyzers\YAnalyzers.Package\YAnalyzers.Package.csproj", "{3ED0B2D8-F72B-4BEB-9FB1-C5B5C1AFAB8D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAnalyzers.Package", "src\YAnalyzers.Package\YAnalyzers.Package.csproj", "{3ED0B2D8-F72B-4BEB-9FB1-C5B5C1AFAB8D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAnalyzers.Test", "YAnalyzers\YAnalyzers.Test\YAnalyzers.Test.csproj", "{D45FA23F-CD9B-4A15-8FF9-9A0781511EC7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAnalyzers.Test", "src\UnitTests\YAnalyzers.Test.csproj", "{D45FA23F-CD9B-4A15-8FF9-9A0781511EC7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "YAnalyzers.Vsix", "YAnalyzers\YAnalyzers.Vsix\YAnalyzers.Vsix.csproj", "{F12BD1B7-0376-4712-BDD8-D24898F2AA53}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAnalyzers.Vsix", "src\YAnalyzers.Vsix\YAnalyzers.Vsix.csproj", "{F12BD1B7-0376-4712-BDD8-D24898F2AA53}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{92380C1A-B812-4A9D-BE9C-A1B985730524}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C168FB0C-4248-446F-9ACA-8FC78F03D629}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CSharp", "CSharp", "{D7943F32-0054-442B-8F25-16B5D39DFB9C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAnalyzers.CSharp", "src\CSharp\YAnalyzers.CSharp\YAnalyzers.CSharp.csproj", "{A73EBBC1-822C-4B7E-8792-4210E2B9D9E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "YAnalyzers.CSharp.CodeFixes", "src\CSharp\YAnalyzers.CSharp.CodeFixes\YAnalyzers.CSharp.CodeFixes.csproj", "{054F42EF-9CDA-43BF-8801-45594607726F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{82F97BCF-ACD1-4E6F-B2A7-AC52B4495CC8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +54,24 @@ Global
 		{F12BD1B7-0376-4712-BDD8-D24898F2AA53}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F12BD1B7-0376-4712-BDD8-D24898F2AA53}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F12BD1B7-0376-4712-BDD8-D24898F2AA53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A73EBBC1-822C-4B7E-8792-4210E2B9D9E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A73EBBC1-822C-4B7E-8792-4210E2B9D9E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A73EBBC1-822C-4B7E-8792-4210E2B9D9E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A73EBBC1-822C-4B7E-8792-4210E2B9D9E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{054F42EF-9CDA-43BF-8801-45594607726F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{054F42EF-9CDA-43BF-8801-45594607726F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{054F42EF-9CDA-43BF-8801-45594607726F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{054F42EF-9CDA-43BF-8801-45594607726F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{44C37984-8243-4F74-B29E-51EFD2E55EB9} = {C168FB0C-4248-446F-9ACA-8FC78F03D629}
+		{7B924711-5778-4C5F-AD9F-B684274E703F} = {C168FB0C-4248-446F-9ACA-8FC78F03D629}
+		{D45FA23F-CD9B-4A15-8FF9-9A0781511EC7} = {82F97BCF-ACD1-4E6F-B2A7-AC52B4495CC8}
+		{A73EBBC1-822C-4B7E-8792-4210E2B9D9E3} = {D7943F32-0054-442B-8F25-16B5D39DFB9C}
+		{054F42EF-9CDA-43BF-8801-45594607726F} = {D7943F32-0054-442B-8F25-16B5D39DFB9C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {30206298-F503-4345-B946-9127A96D4F1B}
