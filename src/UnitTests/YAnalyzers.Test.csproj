@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\YAnalyzers.CodeFixes\YAnalyzers.CodeFixes.csproj" />
     <ProjectReference Include="..\Core\YAnalyzers\YAnalyzers.csproj" />
+    <ProjectReference Include="..\CSharp\YAnalyzers.CSharp.CodeFixes\YAnalyzers.CSharp.CodeFixes.csproj" />
     <ProjectReference Include="..\CSharp\YAnalyzers.CSharp\YAnalyzers.CSharp.csproj" />
   </ItemGroup>
 

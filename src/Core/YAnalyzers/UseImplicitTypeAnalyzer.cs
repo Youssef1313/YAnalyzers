@@ -4,7 +4,10 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace YAnalyzers
 {
-    public abstract class UseImplicitTypeAnalyzer : DiagnosticAnalyzer
+    /// <summary>
+    /// Y0001: Use implicit type when it's apparent.
+    /// </summary>
+    public abstract class UseImplicitTypeAnalyzer : DiagnosticAnalyzer // C#-only analyzer.
     {
         public const string DiagnosticId = "Y0001";
 

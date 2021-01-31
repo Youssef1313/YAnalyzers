@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace YAnalyzers.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class CSharpUseImplicitType : UseImplicitTypeAnalyzer
+    public sealed class CSharpUseImplicitTypeAnalyzer : UseImplicitTypeAnalyzer
     {
         protected override void InitializeWorker(AnalysisContext context)
         {
