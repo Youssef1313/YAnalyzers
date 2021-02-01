@@ -16,9 +16,9 @@ namespace YAnalyzers
         private static readonly LocalizableString s_description = new LocalizableResourceString(nameof(YAnalyzersResources.UseImplicitTypeDescription), YAnalyzersResources.ResourceManager, typeof(YAnalyzersResources));
         private const string Category = "Style";
 
-        private static readonly DiagnosticDescriptor Rule = new(DiagnosticId, s_title, s_message, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, s_description);
+        protected static readonly DiagnosticDescriptor s_rule = new(DiagnosticId, s_title, s_message, Category, DiagnosticSeverity.Warning, isEnabledByDefault: true, s_description);
 
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(Rule);
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(s_rule);
 
         public override void Initialize(AnalysisContext context)
         {
