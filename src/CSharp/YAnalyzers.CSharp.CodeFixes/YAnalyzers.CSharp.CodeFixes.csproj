@@ -15,8 +15,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="CodeFixResources.Designer.cs" DesignTime="True" AutoGen="True" DependentUpon="CodeFixResources.resx" />
-    <EmbeddedResource Update="CodeFixResources.resx" Generator="ResXFileCodeGenerator" LastGenOutput="CodeFixResources.Designer.cs" />
+    <Compile Update="YAnalyzersResources.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>YAnalyzersResources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Update="YAnalyzersResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>YAnalyzersResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>
