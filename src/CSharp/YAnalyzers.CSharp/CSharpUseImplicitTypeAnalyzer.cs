@@ -25,8 +25,15 @@ namespace YAnalyzers.CSharp
                 return;
             }
 
+            // CS0822: Implicitly-typed variables cannot be constant
+            // TODO: Can it be a constant but parent is not LocalDeclarationStatementSyntax??
+            if (node.Parent is LocalDeclarationStatementSyntax { IsConst: true })
+            {
+                return;
+            }
+
             // Fields can't use `var`.
-            if (node.Parent.IsKind(SyntaxKind.FieldDeclaration))
+            if (node.Parent.IsKind(SyntaxKind.FieldDeclaration)) // TODO: Is EventFieldDeclaration needed?
             {
                 return;
             }

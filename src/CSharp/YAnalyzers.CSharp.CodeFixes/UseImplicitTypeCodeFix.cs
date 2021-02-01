@@ -24,6 +24,11 @@ namespace YAnalyzers.CSharp
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+            if (root is null)
+            {
+                return;
+            }
+
             var diagnostic = context.Diagnostics.First();
             var node = root.FindNode(diagnostic.Location.SourceSpan);
             if (node is not VariableDeclarationSyntax variableDeclaration)
