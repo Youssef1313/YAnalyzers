@@ -68,10 +68,18 @@ namespace YAnalyzers.CSharp
                 return;
             }
 
+            // A type named 'var' exists in scope. Using implicit typing will change semantics and produce compile-errors unless the type is already 'var'.
+            if (!context.SemanticModel.LookupSymbols(node.Type.SpanStart, container: null, name: "var").IsEmpty &&
+                typeInfo.Type?.Name != "var")
+            {
+                return;
+            }
+
             // string x = ""; // Should use var.
             // string x = $""; // Should use var.
             // int x = 0; // Should use var.
             // MyType t = (MyType)x; // Should use var.
+            // TODO: Handle ArrayCreationExpression.
             if (initializer.Value.IsKind(SyntaxKind.StringLiteralExpression) ||
                 initializer.Value.IsKind(SyntaxKind.InterpolatedStringExpression) ||
                 initializer.Value.IsKind(SyntaxKind.NumericLiteralExpression) ||
