@@ -215,7 +215,7 @@ class var<T>
     }
 }
 ";
-            await VerifyCS.VerifyCodeFixAsync(code, code);
+            await VerifyCS.VerifyCodeFixAsync(code, fixedCode);
         }
     }
 }
