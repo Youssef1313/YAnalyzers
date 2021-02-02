@@ -44,7 +44,7 @@
   <!-- https://github.com/NuGet/Home/issues/6754#issuecomment-388166770 -->
   <Target Name="_UpdatePackageId" BeforeTargets="$(PackDependsOn)" >
     <PropertyGroup>
-      <PackageId>$(MSBuildProjectName)</PackageId>
+      <PackageId>YAnalyzers</PackageId>
     </PropertyGroup>
   </Target>
 
