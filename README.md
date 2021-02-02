@@ -1,14 +1,12 @@
 # YAnalyzers
 
-An analyzers package implemented with the .NET Compiler platform (aka Roslyn).
+An analyzers package implemented with the .NET Compiler platform (aka Roslyn), available via [NuGet](https://www.nuget.org/packages/YAnalyzers).
 
 Currently contains only one analyzer 'Y0001', which is a replacement to [IDE0007](https://docs.microsoft.com/dotnet/fundamentals/code-analysis/style-rules/ide0007-ide0008).
 
 Soon, I may also add a replacement to IDE0008.
 
 Feel free to open issues suggesting other rules.
-
-*Note: The package isn't yet available via NuGet. I'll work on releasing a first version soon, especially if there were interest from others.*
 
 ## Rules
 
