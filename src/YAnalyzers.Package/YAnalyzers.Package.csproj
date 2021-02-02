@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <PackageId>YAnalyzers</PackageId>
+    <PackageId>*$(MSBuildProjectFullPath)*</PackageId>
     <PackageVersion>2.0.0.0</PackageVersion>
     <Authors>Youssef1313</Authors>
     <PackageProjectUrl>https://github.com/Youssef1313/YAnalyzers</PackageProjectUrl>
@@ -39,6 +39,13 @@
       <TfmSpecificPackageFile Include="$(OutputPath)\YAnalyzers.CSharp.dll" PackagePath="analyzers/dotnet/cs" />
       <TfmSpecificPackageFile Include="$(OutputPath)\YAnalyzers.CSharp.CodeFixes.dll" PackagePath="analyzers/dotnet/cs" />
     </ItemGroup>
+  </Target>
+
+  <!-- https://github.com/NuGet/Home/issues/6754#issuecomment-388166770 -->
+  <Target Name="_UpdatePackageId" BeforeTargets="$(PackDependsOn)" >
+    <PropertyGroup>
+      <PackageId>YAnalyzers</PackageId>
+    </PropertyGroup>
   </Target>
 
 </Project>
