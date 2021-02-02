@@ -13,19 +13,19 @@
     <Authors>Youssef1313</Authors>
     <PackageProjectUrl>https://github.com/Youssef1313/YAnalyzers</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Youssef1313/YAnalyzers</RepositoryUrl>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Description>YAnalyzers</Description>
-    <PackageReleaseNotes>Summary of changes made in this release of the package.</PackageReleaseNotes>
-    <Copyright>Copyright</Copyright>
-    <PackageTags>YAnalyzers, analyzers</PackageTags>
-    <NoPackageAnalysis>true</NoPackageAnalysis>
-
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>YAnalyzers analyzers var implicit typing</PackageTags>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Core\YAnalyzers.CodeFixes\YAnalyzers.CodeFixes.csproj" />
     <ProjectReference Include="..\Core\YAnalyzers\YAnalyzers.csproj" />
+    <ProjectReference Include="..\CSharp\YAnalyzers.CSharp.CodeFixes\YAnalyzers.CSharp.CodeFixes.csproj" />
+    <ProjectReference Include="..\CSharp\YAnalyzers.CSharp\YAnalyzers.CSharp.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -36,6 +36,8 @@
     <ItemGroup>
       <TfmSpecificPackageFile Include="$(OutputPath)\YAnalyzers.dll" PackagePath="analyzers/dotnet/cs" />
       <TfmSpecificPackageFile Include="$(OutputPath)\YAnalyzers.CodeFixes.dll" PackagePath="analyzers/dotnet/cs" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\YAnalyzers.CSharp.dll" PackagePath="analyzers/dotnet/cs" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\YAnalyzers.CSharp.CodeFixes.dll" PackagePath="analyzers/dotnet/cs" />
     </ItemGroup>
   </Target>
 
