@@ -10,7 +10,7 @@ namespace YAnalyzers.Test
     // Tests are taken from Roslyn:
     // https://github.com/dotnet/roslyn/blob/6bf3920b9170f201c9c2fb8301d2a07e22870756/src/Analyzers/CSharp/Tests/UseImplicitOrExplicitType/UseImplicitTypeTests.cs
     [TestClass]
-    public class UseImplicitTypeAnalyzerTests
+    public class UseImplicitOrExplicitTypeAnalyzerTests
     {
         [TestMethod]
         public async Task FieldDeclaration_NoDiagnostic()
@@ -200,7 +200,7 @@ class var<T>
 {
     void M()
     {
-        [|var<int> c = new var<int>()|];
+        {|#0:var<int> c = new var<int>()|};
     }
 }
 ";
@@ -215,7 +215,7 @@ class var<T>
     }
 }
 ";
-            await VerifyCS.VerifyCodeFixAsync(code, fixedCode);
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0), fixedCode);
         }
     }
 }
