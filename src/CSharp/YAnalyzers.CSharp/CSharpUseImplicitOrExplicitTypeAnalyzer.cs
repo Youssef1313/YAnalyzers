@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace YAnalyzers.CSharp
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public sealed class CSharpUseImplicitTypeAnalyzer : UseImplicitOrExplicitTypeAnalyzer
+    public sealed class CSharpUseImplicitOrExplicitTypeAnalyzer : UseImplicitOrExplicitTypeAnalyzer
     {
         protected override void InitializeWorker(AnalysisContext context)
         {
