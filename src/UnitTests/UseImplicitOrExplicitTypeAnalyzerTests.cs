@@ -382,5 +382,35 @@ interface IInterface
             };
             await VerifyCS.VerifyCodeFixAsync(code, expectedDiagnostics, fixedCode);
         }
+
+        [TestMethod]
+        public async Task DefaultExpression_ShouldUseVar()
+        {
+            var code = @"
+using System;
+class C
+{
+    public void Process()
+    {
+        {|#0:int x = default(int)|};
+        int y = default;
+        var z = default(int);
+    }
+}
+";
+            var fixedCode = @"
+using System;
+class C
+{
+    public void Process()
+    {
+        var x = default(int);
+        int y = default;
+        var z = default(int);
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
     }
 }
