@@ -61,6 +61,15 @@ namespace YAnalyzers.CSharp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use explicit type.
+        /// </summary>
+        internal static string UseExplicitType {
+            get {
+                return ResourceManager.GetString("UseExplicitType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Use implicit type.
         /// </summary>
         internal static string UseImplicitType {
