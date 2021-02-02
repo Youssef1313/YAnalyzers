@@ -61,6 +61,33 @@ namespace YAnalyzers {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Variables should use explicit type when type is not apparent.
+        /// </summary>
+        internal static string UseExplicitTypeDescription {
+            get {
+                return ResourceManager.GetString("UseExplicitTypeDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Variable should use explicit type.
+        /// </summary>
+        internal static string UseExplicitTypeMessage {
+            get {
+                return ResourceManager.GetString("UseExplicitTypeMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use explicit type.
+        /// </summary>
+        internal static string UseExplicitTypeTitle {
+            get {
+                return ResourceManager.GetString("UseExplicitTypeTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Variables should use implicit type when type is apparent.
         /// </summary>
         internal static string UseImplicitTypeDescription {
