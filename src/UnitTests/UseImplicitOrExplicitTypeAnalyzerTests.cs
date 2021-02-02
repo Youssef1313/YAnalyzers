@@ -335,5 +335,52 @@ class Program
 
             await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
         }
+
+        [TestMethod]
+        public async Task AsExpression_ShouldUseVar()
+        {
+            var code = @"
+using System;
+class C
+{
+    public void Process()
+    {
+        {|#0:A a = new A()|};
+        {|#1:IInterface s = a as IInterface|};
+        IInterface i = a;
+    }
+}
+class A : IInterface
+{
+}
+interface IInterface
+{
+}
+";
+            var fixedCode = @"
+using System;
+class C
+{
+    public void Process()
+    {
+        var a = new A();
+        var s = a as IInterface;
+        IInterface i = a;
+    }
+}
+class A : IInterface
+{
+}
+interface IInterface
+{
+}
+";
+            var expectedDiagnostics = new[]
+            {
+                VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0),
+                VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(1),
+            };
+            await VerifyCS.VerifyCodeFixAsync(code, expectedDiagnostics, fixedCode);
+        }
     }
 }
