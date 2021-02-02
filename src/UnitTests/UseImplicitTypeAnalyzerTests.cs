@@ -2,7 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using VerifyCS = YAnalyzers.Test.CSharpCodeFixVerifier<
-    YAnalyzers.CSharp.CSharpUseImplicitTypeAnalyzer,
+    YAnalyzers.CSharp.CSharpUseImplicitOrExplicitTypeAnalyzer,
     YAnalyzers.CSharp.UseImplicitTypeCodeFix>;
 
 namespace YAnalyzers.Test

@@ -13,7 +13,7 @@ namespace YAnalyzers.CSharp
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseImplicitTypeCodeFix)), Shared]
     public class UseImplicitTypeCodeFix : CodeFixProvider
     {
-        public sealed override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(UseImplicitTypeAnalyzer.DiagnosticId);
+        public sealed override ImmutableArray<string> FixableDiagnosticIds => ImmutableArray.Create(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId);
 
         public sealed override FixAllProvider GetFixAllProvider()
         {
