@@ -1,4 +1,4 @@
-name: Build YAnalyzers (Windows)
+name: Build YAnalyzers
 
 on:
   push:
