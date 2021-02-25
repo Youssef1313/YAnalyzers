@@ -18,15 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="YAnalyzersResources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>YAnalyzersResources.resx</DependentUpon>
-    </Compile>
-    <EmbeddedResource Update="YAnalyzersResources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>YAnalyzersResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <EmbeddedResource Update="YAnalyzersResources.resx" GenerateSource="true" />
   </ItemGroup>
 
 </Project>
