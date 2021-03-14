@@ -43,6 +43,10 @@ namespace YAnalyzers.CSharp
             {
                 type = forEach.Type;
             }
+            else if (node is DeclarationExpressionSyntax declarationExpression)
+            {
+                type = declarationExpression.Type;
+            }
             else
             {
                 return;
