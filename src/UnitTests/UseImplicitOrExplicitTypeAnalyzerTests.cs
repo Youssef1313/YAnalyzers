@@ -412,5 +412,29 @@ class C
 ";
             await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0), fixedCode);
         }
+
+        [TestMethod]
+        public async Task ForEach_ShouldUseVar()
+        {
+            var code = @"
+class C
+{
+    public void Process(string[] items)
+    {
+        foreach (var item in items) {}
+    }
+}
+";
+            var fixedCode = @"
+class C
+{
+    public void Process()
+    {
+        foreach (string item in items) {}
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
     }
 }

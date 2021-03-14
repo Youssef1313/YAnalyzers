@@ -21,11 +21,7 @@ namespace YAnalyzers.CSharp
             UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId,
             UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId);
 
-        public sealed override FixAllProvider GetFixAllProvider()
-        {
-            // See https://github.com/dotnet/roslyn/blob/master/docs/analyzers/FixAllProvider.md for more information on Fix All Providers
-            return WellKnownFixAllProviders.BatchFixer;
-        }
+        public sealed override FixAllProvider GetFixAllProvider() => WellKnownFixAllProviders.BatchFixer;
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -56,7 +52,7 @@ namespace YAnalyzers.CSharp
                 context.RegisterCodeFix(
                     CodeAction.Create(
                     title: YAnalyzersResources.UseExplicitType,
-                    createChangedDocument: ct => UseExplicitType(context.Document, root, variableDeclaration, ct),
+                    createChangedDocument: ct => UseExplicitTypeAsync(context.Document, root, variableDeclaration, ct),
                     equivalenceKey: nameof(YAnalyzersResources.UseImplicitType)),
                 diagnostic);
             }
@@ -66,17 +62,17 @@ namespace YAnalyzers.CSharp
             }
         }
 
-        private Task<Document> UseImplicitType(Document document, SyntaxNode root, TypeSyntax typeSyntax)
+        private static Task<Document> UseImplicitType(Document document, SyntaxNode root, TypeSyntax typeSyntax)
         {
             var newNode = SyntaxFactory.IdentifierName(SyntaxFacts.GetText(SyntaxKind.VarKeyword)).WithTriviaFrom(typeSyntax);
             var newDocument = document.WithSyntaxRoot(root.ReplaceNode(typeSyntax, newNode));
             return Task.FromResult(newDocument);
         }
 
-        private async Task<Document> UseExplicitType(Document document, SyntaxNode root, VariableDeclarationSyntax declarationSyntax, CancellationToken cancellationToken)
+        private static async Task<Document> UseExplicitTypeAsync(Document document, SyntaxNode root, VariableDeclarationSyntax declarationSyntax, CancellationToken cancellationToken)
         {
             Debug.Assert(declarationSyntax.Type.IsVar);
-            var model = (await document.GetSemanticModelAsync(cancellationToken))!;
+            var model = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
             var typeInfo = model.GetTypeInfo(declarationSyntax.Variables.Single().Initializer!.Value, cancellationToken);
             
             var generator = SyntaxGenerator.GetGenerator(document);
