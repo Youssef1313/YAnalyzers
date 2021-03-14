@@ -421,20 +421,20 @@ class C
 {
     public void Process(string[] items)
     {
-        foreach (var item in items) {}
+        {|#0:foreach (var item in items) {}|}
     }
 }
 ";
             var fixedCode = @"
 class C
 {
-    public void Process()
+    public void Process(string[] items)
     {
         foreach (string item in items) {}
     }
 }
 ";
-            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
         }
     }
 }

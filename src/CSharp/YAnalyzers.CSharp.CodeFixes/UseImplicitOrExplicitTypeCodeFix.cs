@@ -33,7 +33,17 @@ namespace YAnalyzers.CSharp
 
             var diagnostic = context.Diagnostics.First();
             var node = root.FindNode(diagnostic.Location.SourceSpan);
-            if (node is not VariableDeclarationSyntax variableDeclaration)
+
+            TypeSyntax? type = null;
+            if (node is VariableDeclarationSyntax variableDeclaration)
+            {
+                type = variableDeclaration.Type;
+            }
+            else if (node is ForEachStatementSyntax forEach)
+            {
+                type = forEach.Type;
+            }
+            else
             {
                 return;
             }
@@ -43,7 +53,7 @@ namespace YAnalyzers.CSharp
                 context.RegisterCodeFix(
                     CodeAction.Create(
                     title: YAnalyzersResources.UseImplicitType,
-                    createChangedDocument: _ => UseImplicitType(context.Document, root, variableDeclaration.Type),
+                    createChangedDocument: _ => UseImplicitType(context.Document, root, type),
                     equivalenceKey: nameof(YAnalyzersResources.UseImplicitType)),
                 diagnostic);
             }
@@ -52,7 +62,7 @@ namespace YAnalyzers.CSharp
                 context.RegisterCodeFix(
                     CodeAction.Create(
                     title: YAnalyzersResources.UseExplicitType,
-                    createChangedDocument: ct => UseExplicitTypeAsync(context.Document, root, variableDeclaration, ct),
+                    createChangedDocument: ct => UseExplicitTypeAsync(context.Document, root, type, ct),
                     equivalenceKey: nameof(YAnalyzersResources.UseImplicitType)),
                 diagnostic);
             }
@@ -69,16 +79,16 @@ namespace YAnalyzers.CSharp
             return Task.FromResult(newDocument);
         }
 
-        private static async Task<Document> UseExplicitTypeAsync(Document document, SyntaxNode root, VariableDeclarationSyntax declarationSyntax, CancellationToken cancellationToken)
+        private static async Task<Document> UseExplicitTypeAsync(Document document, SyntaxNode root, TypeSyntax typeSyntax, CancellationToken cancellationToken)
         {
-            Debug.Assert(declarationSyntax.Type.IsVar);
+            Debug.Assert(typeSyntax.IsVar);
             var model = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
-            var typeInfo = model.GetTypeInfo(declarationSyntax.Variables.Single().Initializer!.Value, cancellationToken);
+            var typeInfo = model.GetTypeInfo(typeSyntax, cancellationToken);
             
             var generator = SyntaxGenerator.GetGenerator(document);
-            var newNode = generator.TypeExpression(typeInfo.ConvertedType).WithTriviaFrom(declarationSyntax.Type);
+            var newNode = generator.TypeExpression(typeInfo.ConvertedType).WithTriviaFrom(typeSyntax);
 
-            return document.WithSyntaxRoot(root.ReplaceNode(declarationSyntax.Type, newNode));
+            return document.WithSyntaxRoot(root.ReplaceNode(typeSyntax, newNode));
         }
     }
 }
