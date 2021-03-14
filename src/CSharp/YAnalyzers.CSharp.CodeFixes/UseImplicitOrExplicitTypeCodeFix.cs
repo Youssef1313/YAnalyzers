@@ -25,14 +25,14 @@ namespace YAnalyzers.CSharp
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            var root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
+            SyntaxNode? root = await context.Document.GetSyntaxRootAsync(context.CancellationToken).ConfigureAwait(false);
             if (root is null)
             {
                 return;
             }
 
-            var diagnostic = context.Diagnostics.First();
-            var node = root.FindNode(diagnostic.Location.SourceSpan);
+            Diagnostic diagnostic = context.Diagnostics.First();
+            SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan);
 
             TypeSyntax? type = null;
             if (node is VariableDeclarationSyntax variableDeclaration)
@@ -78,19 +78,19 @@ namespace YAnalyzers.CSharp
 
         private static Task<Document> UseImplicitType(Document document, SyntaxNode root, TypeSyntax typeSyntax)
         {
-            var newNode = SyntaxFactory.IdentifierName(SyntaxFacts.GetText(SyntaxKind.VarKeyword)).WithTriviaFrom(typeSyntax);
-            var newDocument = document.WithSyntaxRoot(root.ReplaceNode(typeSyntax, newNode));
+            IdentifierNameSyntax newNode = SyntaxFactory.IdentifierName(SyntaxFacts.GetText(SyntaxKind.VarKeyword)).WithTriviaFrom(typeSyntax);
+            Document newDocument = document.WithSyntaxRoot(root.ReplaceNode(typeSyntax, newNode));
             return Task.FromResult(newDocument);
         }
 
         private static async Task<Document> UseExplicitTypeAsync(Document document, SyntaxNode root, TypeSyntax typeSyntax, CancellationToken cancellationToken)
         {
             Debug.Assert(typeSyntax.IsVar);
-            var model = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
-            var typeInfo = model.GetTypeInfo(typeSyntax, cancellationToken);
-            
-            var generator = SyntaxGenerator.GetGenerator(document);
-            var newNode = generator.TypeExpression(typeInfo.ConvertedType).WithTriviaFrom(typeSyntax);
+            SemanticModel model = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
+            TypeInfo typeInfo = model.GetTypeInfo(typeSyntax, cancellationToken);
+
+            SyntaxGenerator generator = SyntaxGenerator.GetGenerator(document);
+            SyntaxNode newNode = generator.TypeExpression(typeInfo.ConvertedType).WithTriviaFrom(typeSyntax);
 
             return document.WithSyntaxRoot(root.ReplaceNode(typeSyntax, newNode));
         }

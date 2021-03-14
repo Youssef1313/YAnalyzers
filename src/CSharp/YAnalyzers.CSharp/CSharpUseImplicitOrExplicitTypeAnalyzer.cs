@@ -21,7 +21,7 @@ namespace YAnalyzers.CSharp
         {
             var node = (VariableDeclarationSyntax)context.Node;
 
-            if (!ShouldAnalyze(node, out var initializer))
+            if (!ShouldAnalyze(node, out EqualsValueClauseSyntax? initializer))
             {
                 return;
             }
@@ -29,7 +29,7 @@ namespace YAnalyzers.CSharp
             // TODO: Create a utilities project containing NotNullWhenAttribute and use it to avoid suppression.
             TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(initializer!.Value, context.CancellationToken);
 
-            var shouldUseVar = ShouldUseVar(node, initializer, typeInfo, context.SemanticModel);
+            bool shouldUseVar = ShouldUseVar(node, initializer, typeInfo, context.SemanticModel);
             if (node.Type.IsVar && !shouldUseVar)
             {
                 context.ReportDiagnostic(Diagnostic.Create(s_useExplicitTypeRule, node.GetLocation()));
