@@ -9,14 +9,14 @@
 
   <PropertyGroup>
     <PackageId>*$(MSBuildProjectFile)*</PackageId>
-    <PackageVersion>2.0.0.0</PackageVersion>
+    <PackageVersion>1.2.0.0</PackageVersion>
     <Authors>Youssef1313</Authors>
     <PackageProjectUrl>https://github.com/Youssef1313/YAnalyzers</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Youssef1313/YAnalyzers</RepositoryUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <Description>YAnalyzers</Description>
     <PackageReleaseNotes></PackageReleaseNotes>
-    <PackageTags>YAnalyzers analyzers var implicit typing</PackageTags>
+    <PackageTags>YAnalyzers analyzers var implicit typing roslyn</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <TargetsForTfmSpecificContentInPackage>$(TargetsForTfmSpecificContentInPackage);_AddAnalyzersToOutput</TargetsForTfmSpecificContentInPackage>
   </PropertyGroup>
