@@ -412,5 +412,59 @@ class C
 ";
             await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0), fixedCode);
         }
+
+        [TestMethod]
+        public async Task ForEach_ShouldUseVar()
+        {
+            var code = @"
+class C
+{
+    public void Process(string[] items)
+    {
+        {|#0:foreach (var item in items) {}|}
+    }
+}
+";
+            var fixedCode = @"
+class C
+{
+    public void Process(string[] items)
+    {
+        foreach (string item in items) {}
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
+
+        [TestMethod]
+        public async Task OutVarArgument_ShouldUseExplicitType()
+        {
+            var code = @"
+class C
+{
+    public void Process(string s)
+    {
+        if (int.TryParse(s, out {|#0:var i|}))
+        {
+            System.Console.WriteLine(i);
+        }
+    }
+}
+";
+            var fixedCode = @"
+class C
+{
+    public void Process(string s)
+    {
+        if (int.TryParse(s, out int i))
+        {
+            System.Console.WriteLine(i);
+        }
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
     }
 }
