@@ -27,6 +27,6 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
       - name: Build
-        run: dotnet build YAnalyzers.slnf --configuration ${{ matrix.configuration }}
+        run: dotnet build --configuration ${{ matrix.configuration }}
       - name: Test
         run: dotnet test --no-build --verbosity normal --configuration ${{ matrix.configuration }}
