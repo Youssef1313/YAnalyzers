@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -14,13 +13,15 @@ namespace YAnalyzers.CSharp
         protected override void InitializeWorker(AnalysisContext context)
         {
             context.RegisterSyntaxNodeAction(AnalyzeVariableDeclaration, SyntaxKind.VariableDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeDeclarationExpression, SyntaxKind.DeclarationExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeForEachStatement, SyntaxKind.ForEachStatement);
         }
 
-        private void AnalyzeVariableDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeVariableDeclaration(SyntaxNodeAnalysisContext context)
         {
             var node = (VariableDeclarationSyntax)context.Node;
 
-            if (!ShouldAnalyze(node, out var initializer))
+            if (!ShouldAnalyze(node, out EqualsValueClauseSyntax? initializer))
             {
                 return;
             }
@@ -28,7 +29,7 @@ namespace YAnalyzers.CSharp
             // TODO: Create a utilities project containing NotNullWhenAttribute and use it to avoid suppression.
             TypeInfo typeInfo = context.SemanticModel.GetTypeInfo(initializer!.Value, context.CancellationToken);
 
-            var shouldUseVar = ShouldUseVar(node, initializer, typeInfo, context.SemanticModel);
+            bool shouldUseVar = ShouldUseVar(node, initializer, typeInfo, context.SemanticModel);
             if (node.Type.IsVar && !shouldUseVar)
             {
                 context.ReportDiagnostic(Diagnostic.Create(s_useExplicitTypeRule, node.GetLocation()));
@@ -36,6 +37,29 @@ namespace YAnalyzers.CSharp
             else if (!node.Type.IsVar && shouldUseVar)
             {
                 context.ReportDiagnostic(Diagnostic.Create(s_useImplicitTypeRule, node.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeDeclarationExpression(SyntaxNodeAnalysisContext context)
+        {
+            // int.TryParse("", out var i);
+            // foreach (var (a, b) in x) {}
+            // Consider both cases as always not apparent and force usage of explicit.
+            var node = (DeclarationExpressionSyntax)context.Node;
+            if (node.Type.IsVar)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(s_useExplicitTypeRule, node.GetLocation()));
+            }
+        }
+
+        private static void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
+        {
+            // foreach (var x in y) {}
+            // Consider as always not apparent and force usage of explicit type
+            var node = (ForEachStatementSyntax)context.Node;
+            if (node.Type.IsVar)
+            {
+                context.ReportDiagnostic(Diagnostic.Create(s_useExplicitTypeRule, node.GetLocation()));
             }
         }
 

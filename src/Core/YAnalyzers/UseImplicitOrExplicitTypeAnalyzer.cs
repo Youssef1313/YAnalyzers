@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -22,13 +23,15 @@ namespace YAnalyzers
         private static readonly LocalizableString s_useExplicitTypeMessage = new LocalizableResourceString(nameof(YAnalyzersResources.UseExplicitTypeMessage), YAnalyzersResources.ResourceManager, typeof(YAnalyzersResources));
         private static readonly LocalizableString s_useExplicitTypeDescription = new LocalizableResourceString(nameof(YAnalyzersResources.UseExplicitTypeDescription), YAnalyzersResources.ResourceManager, typeof(YAnalyzersResources));
 
+#pragma warning disable CA1707 // Identifiers should not contain underscores
         protected static readonly DiagnosticDescriptor s_useImplicitTypeRule = new(
             UseImplicitTypeDiagnosticId, s_useImplicitTypeTitle, s_useImplicitTypeMessage, Category, DiagnosticSeverity.Warning,
             isEnabledByDefault: true, s_useImplicitTypeDescription);
 
         protected static readonly DiagnosticDescriptor s_useExplicitTypeRule = new(
-    UseExplicitTypeDiagnosticId, s_useExplicitTypeTitle, s_useExplicitTypeMessage, Category, DiagnosticSeverity.Warning,
-    isEnabledByDefault: true, s_useExplicitTypeDescription);
+            UseExplicitTypeDiagnosticId, s_useExplicitTypeTitle, s_useExplicitTypeMessage, Category, DiagnosticSeverity.Warning,
+            isEnabledByDefault: true, s_useExplicitTypeDescription);
+#pragma warning restore CA1707 // Identifiers should not contain underscores
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics => ImmutableArray.Create(s_useImplicitTypeRule, s_useExplicitTypeRule);
 

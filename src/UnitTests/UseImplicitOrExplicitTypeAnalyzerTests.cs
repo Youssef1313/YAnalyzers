@@ -242,13 +242,13 @@ class Program
 {
     void M()
     {
-        {|#0:string s1 = """"|};
-        {|#1:string s1Interpolated = $""""|};
-        {|#2:string s1Verbatim = @""""|};
-        {|#3:string s1VerbatimInterpolated = @$""""|};
-        {|#4:string s1InterpolatedVerbatim = $@""""|};
+        {|Y0001:string s1 = """"|};
+        {|Y0001:string s1Interpolated = $""""|};
+        {|Y0001:string s1Verbatim = @""""|};
+        {|Y0001:string s1VerbatimInterpolated = @$""""|};
+        {|Y0001:string s1InterpolatedVerbatim = $@""""|};
 
-        {|#5:int i1 = 0|};
+        {|Y0001:int i1 = 0|};
         uint ui1 = 0;
     }
 
@@ -292,16 +292,7 @@ class Program
     }
 }
 ";
-            var expectedDiagnostics = new[]
-            {
-                VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0),
-                VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(1),
-                VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(2),
-                VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(3),
-                VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(4),
-                VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(5),
-            };
-            await VerifyCS.VerifyCodeFixAsync(code, expectedDiagnostics, fixedCode);
+            await VerifyCS.VerifyCodeFixAsync(code, fixedCode);
         }
 
         [TestMethod]
@@ -345,8 +336,8 @@ class C
 {
     public void Process()
     {
-        {|#0:A a = new A()|};
-        {|#1:IInterface s = a as IInterface|};
+        {|Y0001:A a = new A()|};
+        {|Y0001:IInterface s = a as IInterface|};
         IInterface i = a;
     }
 }
@@ -375,12 +366,7 @@ interface IInterface
 {
 }
 ";
-            var expectedDiagnostics = new[]
-            {
-                VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0),
-                VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(1),
-            };
-            await VerifyCS.VerifyCodeFixAsync(code, expectedDiagnostics, fixedCode);
+            await VerifyCS.VerifyCodeFixAsync(code, fixedCode);
         }
 
         [TestMethod]
@@ -411,6 +397,60 @@ class C
 }
 ";
             await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
+
+        [TestMethod]
+        public async Task ForEach_ShouldUseVar()
+        {
+            var code = @"
+class C
+{
+    public void Process(string[] items)
+    {
+        {|#0:foreach (var item in items) {}|}
+    }
+}
+";
+            var fixedCode = @"
+class C
+{
+    public void Process(string[] items)
+    {
+        foreach (string item in items) {}
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
+
+        [TestMethod]
+        public async Task OutVarArgument_ShouldUseExplicitType()
+        {
+            var code = @"
+class C
+{
+    public void Process(string s)
+    {
+        if (int.TryParse(s, out {|#0:var i|}))
+        {
+            System.Console.WriteLine(i);
+        }
+    }
+}
+";
+            var fixedCode = @"
+class C
+{
+    public void Process(string s)
+    {
+        if (int.TryParse(s, out int i))
+        {
+            System.Console.WriteLine(i);
+        }
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
         }
     }
 }
