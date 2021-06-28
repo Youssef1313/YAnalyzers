@@ -134,14 +134,15 @@ namespace YAnalyzers.CSharp
             // MyType t = (MyType)x; // Should use var.
             // MyType t = x as MyType; // Should use var.
             // int x = default(int); // Should use var.
-            // TODO: Handle ArrayCreationExpression.
+            // string x = new string[] { }; // Should use var.
             return initializer.Value.IsKind(SyntaxKind.StringLiteralExpression) ||
                 initializer.Value.IsKind(SyntaxKind.InterpolatedStringExpression) ||
                 initializer.Value.IsKind(SyntaxKind.NumericLiteralExpression) ||
                 initializer.Value.IsKind(SyntaxKind.CastExpression) ||
                 initializer.Value.IsKind(SyntaxKind.AsExpression) ||
                 initializer.Value.IsKind(SyntaxKind.DefaultExpression) ||
-                initializer.Value.IsKind(SyntaxKind.ObjectCreationExpression);
+                initializer.Value.IsKind(SyntaxKind.ObjectCreationExpression) ||
+                initializer.Value.IsKind(SyntaxKind.ArrayCreationExpression);
         }
     }
 }
