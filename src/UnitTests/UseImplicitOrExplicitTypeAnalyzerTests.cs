@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -457,13 +458,13 @@ class C
         [TestMethod]
         public async Task TestAddUsing()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                // Ugly way to conditionally skip a test.
-                // This should be removed anyway.
-                // https://github.com/dotnet/roslyn-sdk/issues/876
-                return;
-            }
+            //if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            //{
+            //    // Ugly way to conditionally skip a test.
+            //    // This should be removed anyway.
+            //    // https://github.com/dotnet/roslyn-sdk/issues/876
+            //    return;
+            //}
 
             var code = @"
 using System.Linq;
@@ -476,17 +477,16 @@ class C
     }
 }
 ";
-            var fixedCode = @"
+            var fixedCode = $@"
 using System.Collections.Generic;
-using System.Linq;
-
+using System.Linq;{Environment.NewLine}
 class C
-{
+{{
     public void M(string[] s)
-    {
+    {{
         List<string> x = s.ToList();
-    }
-}
+    }}
+}}
 ";
             await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
         }
