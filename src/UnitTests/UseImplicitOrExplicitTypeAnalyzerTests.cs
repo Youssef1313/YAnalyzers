@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -580,6 +578,21 @@ class C
                     VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(1),
                 },
                 fixedCode);
+        }
+
+        [TestMethod]
+        public async Task TestArray()
+        {
+            var code = @"
+class C
+{
+    public void M()
+    {
+        var a = new string[] { """", """", """" };
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, code);
         }
     }
 }
