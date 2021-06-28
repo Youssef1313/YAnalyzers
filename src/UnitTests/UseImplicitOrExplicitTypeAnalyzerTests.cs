@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -527,6 +528,58 @@ class C
 }
 ";
             await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
+
+        [TestMethod]
+        public async Task TestUsingVar()
+        {
+            var code = @"
+using System.IO;
+
+class C
+{
+    public void M(string[] s)
+    {
+        // Type apparent cases.
+        using var x1 = new FileStream("""", FileMode.Open);
+        using {|#0:FileStream x2 = new FileStream("""", FileMode.Open)|};
+
+        // Type not apparent.
+        using {|#1:var x3 = GetFileStream()|};
+        using FileStream x4 = GetFileStream();
+    }
+
+    static FileStream GetFileStream() => new FileStream("""", FileMode.Open);
+}
+";
+            var fixedCode = @"
+using System.IO;
+
+class C
+{
+    public void M(string[] s)
+    {
+        // Type apparent cases.
+        using var x1 = new FileStream("""", FileMode.Open);
+        using var x2 = new FileStream("""", FileMode.Open);
+
+        // Type not apparent.
+        using FileStream x3 = GetFileStream();
+        using FileStream x4 = GetFileStream();
+    }
+
+    static FileStream GetFileStream() => new FileStream("""", FileMode.Open);
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code,
+                new[]
+                {
+                    // /0/Test0.cs(10,15): warning Y0001: Variable should use implicit type
+                    VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId).WithLocation(0),
+                    // /0/Test0.cs(13,15): warning Y0002: Variable should use explicit type
+                    VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(1),
+                },
+                fixedCode);
         }
     }
 }
