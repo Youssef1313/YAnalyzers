@@ -477,8 +477,7 @@ class C
 }
 ";
             var fixedCode = $@"
-using System.Collections.Generic;{Environment.NewLine}
-using System.Linq;
+using System.Collections.Generic;{Environment.NewLine}using System.Linq;
 
 class C
 {{
