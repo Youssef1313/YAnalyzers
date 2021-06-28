@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using VerifyCS = YAnalyzers.Test.CSharpCodeFixVerifier<
@@ -446,6 +448,80 @@ class C
         if (int.TryParse(s, out int i))
         {
             System.Console.WriteLine(i);
+        }
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
+
+        [TestMethod]
+        public async Task TestAddUsing()
+        {
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                // Ugly way to conditionally skip a test.
+                // This should be removed anyway.
+                // https://github.com/dotnet/roslyn-sdk/issues/876
+                return;
+            }
+
+            var code = @"
+using System.Linq;
+
+class C
+{
+    public void M(string[] s)
+    {
+        {|#0:var x = s.ToList()|};
+    }
+}
+";
+            var fixedCode = @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    public void M(string[] s)
+    {
+        List<string> x = s.ToList();
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
+
+        [TestMethod]
+        [Ignore("https://github.com/dotnet/roslyn/issues/54437 - https://github.com/Youssef1313/YAnalyzers/issues/33")]
+        public async Task TestDeconstruction()
+        {
+            var code = @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    public void M(string[] s)
+    {
+        var x = new Dictionary<int, string>();
+        foreach ({|#0:var (a, b)|} in x)
+        {
+        }
+    }
+}
+";
+            var fixedCode = @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    public void M(string[] s)
+    {
+        var x = new Dictionary<int, string>();
+        foreach ((int a, string b) in x)
+        {
         }
     }
 }

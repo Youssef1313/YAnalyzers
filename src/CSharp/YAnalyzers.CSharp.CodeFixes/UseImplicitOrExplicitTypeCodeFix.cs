@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
+using Microsoft.CodeAnalysis.Simplification;
 
 namespace YAnalyzers.CSharp
 {
@@ -90,7 +91,7 @@ namespace YAnalyzers.CSharp
             TypeInfo typeInfo = model.GetTypeInfo(typeSyntax, cancellationToken);
 
             SyntaxGenerator generator = SyntaxGenerator.GetGenerator(document);
-            SyntaxNode newNode = generator.TypeExpression(typeInfo.ConvertedType).WithTriviaFrom(typeSyntax);
+            SyntaxNode newNode = generator.TypeExpression(typeInfo.ConvertedType).WithTriviaFrom(typeSyntax).WithAdditionalAnnotations(Simplifier.AddImportsAnnotation);
 
             return document.WithSyntaxRoot(root.ReplaceNode(typeSyntax, newNode));
         }
