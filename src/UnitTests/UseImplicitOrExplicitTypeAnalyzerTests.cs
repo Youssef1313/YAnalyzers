@@ -481,5 +481,42 @@ class C
 ";
             await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
         }
+
+        [TestMethod]
+        [Ignore("https://github.com/dotnet/roslyn/issues/54437 - https://github.com/Youssef1313/YAnalyzers/issues/33")]
+        public async Task TestDeconstruction()
+        {
+            var code = @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    public void M(string[] s)
+    {
+        var x = new Dictionary<int, string>();
+        foreach ({|#0:var (a, b)|} in x)
+        {
+        }
+    }
+}
+";
+            var fixedCode = @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    public void M(string[] s)
+    {
+        var x = new Dictionary<int, string>();
+        foreach ((int a, string b) in x)
+        {
+        }
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
     }
 }
