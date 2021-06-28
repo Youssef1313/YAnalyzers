@@ -452,5 +452,34 @@ class C
 ";
             await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
         }
+
+        [TestMethod]
+        public async Task TestAddUsing()
+        {
+            var code = @"
+using System.Linq;
+
+class C
+{
+    public void M(string[] s)
+    {
+        {|#0:var x = s.ToList()|};
+    }
+}
+";
+            var fixedCode = @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    public void M(string[] s)
+    {
+        List<string> x = s.ToList();
+    }
+}
+";
+            await VerifyCS.VerifyCodeFixAsync(code, VerifyCS.Diagnostic(UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId).WithLocation(0), fixedCode);
+        }
     }
 }
