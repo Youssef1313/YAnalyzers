@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -478,8 +477,9 @@ class C
 }
 ";
             var fixedCode = $@"
-using System.Collections.Generic;
-using System.Linq;{Environment.NewLine}
+using System.Collections.Generic;{Environment.NewLine}
+using System.Linq;
+
 class C
 {{
     public void M(string[] s)
