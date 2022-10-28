@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
 using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -457,14 +457,6 @@ class C
         [TestMethod]
         public async Task TestAddUsing()
         {
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            {
-                // Ugly way to conditionally skip a test.
-                // This should be removed anyway.
-                // https://github.com/dotnet/roslyn-sdk/issues/876
-                return;
-            }
-
             var code = @"
 using System.Linq;
 
