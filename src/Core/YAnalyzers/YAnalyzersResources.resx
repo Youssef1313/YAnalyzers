@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="UseExplicitTypeDescription" xml:space="preserve">
-    <value>Variables should use explicit type when type is not apparent</value>
+    <value>Variables should use explicit type when type is not apparent.</value>
   </data>
   <data name="UseExplicitTypeMessage" xml:space="preserve">
     <value>Variable should use explicit type</value>
@@ -127,7 +127,7 @@
     <value>Use explicit type</value>
   </data>
   <data name="UseImplicitTypeDescription" xml:space="preserve">
-    <value>Variables should use implicit type when type is apparent</value>
+    <value>Variables should use implicit type when type is apparent.</value>
   </data>
   <data name="UseImplicitTypeMessage" xml:space="preserve">
     <value>Variable should use implicit type</value>
