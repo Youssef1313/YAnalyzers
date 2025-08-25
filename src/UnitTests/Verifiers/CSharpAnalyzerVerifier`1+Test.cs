@@ -1,19 +1,18 @@
 ﻿using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Testing.Verifiers;
+using Microsoft.CodeAnalysis.Testing;
 
 namespace YAnalyzers.Test
 {
-    public static partial class CSharpAnalyzerVerifier<TAnalyzer>
+    internal static partial class CSharpAnalyzerVerifier<TAnalyzer>
         where TAnalyzer : DiagnosticAnalyzer, new()
     {
-        public class Test : CSharpAnalyzerTest<TAnalyzer, MSTestVerifier>
+        internal class Test : CSharpAnalyzerTest<TAnalyzer, DefaultVerifier>
         {
             public Test()
             {
-                SolutionTransforms.Add((solution, projectId) =>
-                {
+                SolutionTransforms.Add((solution, projectId) => {
                     CompilationOptions compilationOptions = solution.GetProject(projectId)!.CompilationOptions!;
                     compilationOptions = compilationOptions.WithSpecificDiagnosticOptions(
                         compilationOptions.SpecificDiagnosticOptions.SetItems(CSharpVerifierHelper.NullableWarnings));
