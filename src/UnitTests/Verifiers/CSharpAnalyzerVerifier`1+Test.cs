@@ -8,7 +8,7 @@ namespace YAnalyzers.Test
     internal static partial class CSharpAnalyzerVerifier<TAnalyzer>
         where TAnalyzer : DiagnosticAnalyzer, new()
     {
-        internal class Test : CSharpAnalyzerTest<TAnalyzer, DefaultVerifier>
+        internal sealed class Test : CSharpAnalyzerTest<TAnalyzer, DefaultVerifier>
         {
             public Test()
             {
