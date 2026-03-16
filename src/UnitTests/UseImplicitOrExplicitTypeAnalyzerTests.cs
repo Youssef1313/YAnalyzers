@@ -492,7 +492,6 @@ class C
         }
 
         [TestMethod]
-        [Ignore("https://github.com/dotnet/roslyn/issues/54437 - https://github.com/Youssef1313/YAnalyzers/issues/33")]
         public async Task TestDeconstruction()
         {
             var code = @"

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
@@ -36,6 +37,7 @@ namespace YAnalyzers.CSharp
             SyntaxNode node = root.FindNode(diagnostic.Location.SourceSpan);
 
             TypeSyntax? type = null;
+            DeclarationExpressionSyntax? deconstructionExpression = null;
             if (node is VariableDeclarationSyntax variableDeclaration)
             {
                 type = variableDeclaration.Type;
@@ -46,15 +48,33 @@ namespace YAnalyzers.CSharp
             }
             else if (node is DeclarationExpressionSyntax declarationExpression)
             {
-                type = declarationExpression.Type;
+                if (declarationExpression.Designation is ParenthesizedVariableDesignationSyntax pvds &&
+                    pvds.Variables.All(v => v is SingleVariableDesignationSyntax))
+                {
+                    deconstructionExpression = declarationExpression;
+                }
+                else
+                {
+                    type = declarationExpression.Type;
+                }
             }
             else
             {
                 return;
             }
 
+            if (type is null && deconstructionExpression is null)
+            {
+                return;
+            }
+
             if (diagnostic.Id == UseImplicitOrExplicitTypeAnalyzer.UseImplicitTypeDiagnosticId)
             {
+                if (type is null)
+                {
+                    return;
+                }
+
                 context.RegisterCodeFix(
                     CodeAction.Create(
                     title: YAnalyzersResources.UseImplicitType,
@@ -64,12 +84,24 @@ namespace YAnalyzers.CSharp
             }
             else if (diagnostic.Id == UseImplicitOrExplicitTypeAnalyzer.UseExplicitTypeDiagnosticId)
             {
-                context.RegisterCodeFix(
-                    CodeAction.Create(
-                    title: YAnalyzersResources.UseExplicitType,
-                    createChangedDocument: ct => UseExplicitTypeAsync(context.Document, root, type, ct),
-                    equivalenceKey: nameof(YAnalyzersResources.UseImplicitType)),
-                diagnostic);
+                if (deconstructionExpression is not null)
+                {
+                    context.RegisterCodeFix(
+                        CodeAction.Create(
+                        title: YAnalyzersResources.UseExplicitType,
+                        createChangedDocument: ct => UseExplicitDeconstructionTypeAsync(context.Document, root, deconstructionExpression, ct),
+                        equivalenceKey: nameof(YAnalyzersResources.UseImplicitType)),
+                    diagnostic);
+                }
+                else
+                {
+                    context.RegisterCodeFix(
+                        CodeAction.Create(
+                        title: YAnalyzersResources.UseExplicitType,
+                        createChangedDocument: ct => UseExplicitTypeAsync(context.Document, root, type!, ct),
+                        equivalenceKey: nameof(YAnalyzersResources.UseImplicitType)),
+                    diagnostic);
+                }
             }
             else
             {
@@ -94,6 +126,42 @@ namespace YAnalyzers.CSharp
             SyntaxNode newNode = generator.TypeExpression(typeInfo.ConvertedType).WithTriviaFrom(typeSyntax).WithAdditionalAnnotations(Simplifier.AddImportsAnnotation);
 
             return document.WithSyntaxRoot(root.ReplaceNode(typeSyntax, newNode));
+        }
+
+        private static async Task<Document> UseExplicitDeconstructionTypeAsync(Document document, SyntaxNode root, DeclarationExpressionSyntax declarationExpression, CancellationToken cancellationToken)
+        {
+            var designation = (ParenthesizedVariableDesignationSyntax)declarationExpression.Designation;
+            SemanticModel model = (await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false))!;
+            SyntaxGenerator generator = SyntaxGenerator.GetGenerator(document);
+
+            var arguments = new List<ArgumentSyntax>();
+            bool isFirst = true;
+            foreach (SingleVariableDesignationSyntax singleDesignation in designation.Variables.Cast<SingleVariableDesignationSyntax>())
+            {
+                var localSymbol = (ILocalSymbol)model.GetDeclaredSymbol(singleDesignation, cancellationToken)!;
+
+                TypeSyntax typeSyntax = ((TypeSyntax)generator.TypeExpression(localSymbol.Type))
+                    .WithAdditionalAnnotations(Simplifier.AddImportsAnnotation);
+
+                SingleVariableDesignationSyntax newDesignation = SyntaxFactory.SingleVariableDesignation(
+                    singleDesignation.Identifier.WithLeadingTrivia(SyntaxFactory.Space));
+
+                ArgumentSyntax argument = SyntaxFactory.Argument(
+                    SyntaxFactory.DeclarationExpression(typeSyntax, newDesignation));
+
+                if (!isFirst)
+                {
+                    argument = argument.WithLeadingTrivia(SyntaxFactory.Space);
+                }
+
+                isFirst = false;
+                arguments.Add(argument);
+            }
+
+            TupleExpressionSyntax tupleExpression = SyntaxFactory.TupleExpression(
+                SyntaxFactory.SeparatedList(arguments));
+
+            return document.WithSyntaxRoot(root.ReplaceNode(declarationExpression, tupleExpression));
         }
     }
 }
